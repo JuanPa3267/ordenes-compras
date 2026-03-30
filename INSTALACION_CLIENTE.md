@@ -1,106 +1,90 @@
-# Guía de Instalación para el Cliente (Windows)
+# Guía de Instalación del Sistema de Órdenes de Compra
 
-Esta guía detalla el paso a paso necesario para tomar el proyecto actual y ponerlo a funcionar en la computadora de un cliente. El proyecto se basa en **Next.js**, usa **Prisma ORM** y requiere una base de datos **PostgreSQL**.
-
-> [!IMPORTANT]
-> Se asume que la instalación será local, es decir, todo correrá físicamente en la PC del cliente (servidor y base de datos).
+¡Hola! Esta guía te ayudará a instalar y encender el sistema en tu computadora por primera vez. Sigue los pasos uno a uno, sin prisas.
 
 ---
 
-## 1. Instalación de Requisitos Previos
+## 1. Descargar los programas base
 
-En la computadora del cliente, debes descargar e instalar lo siguiente:
+Tu computadora necesita dos "motores" para funcionar: uno para el sistema y otro para guardar la información.
 
-1. **Node.js**: Descargar la versión **LTS** (Long Term Support) desde [nodejs.org](https://nodejs.org/). Esto instalará también `npm`.
-2. **PostgreSQL**: Descargar el instalador para Windows desde [postgresql.org](https://www.postgresql.org/download/windows/). 
-   - Durante la instalación, **anota muy bien la contraseña** que le asignes al usuario administrador oficial (`postgres`).
-   - Se instalará también **pgAdmin 4** (la interfaz gráfica para ver la base de datos).
-
----
-
-## 2. Preparación Base de Datos (PostgreSQL)
-
-1. Abre **pgAdmin 4** (se instaló junto a PostgreSQL).
-2. Ingresa la contraseña maestra para conectarte al servidor local.
-3. Haz clic derecho en **Databases > Create > Database**.
-4. Nómbrala `ordenes_compras` y dale clic en **Guardar/Save**.
+1. **Instalar Node.js:** Entra a [nodejs.org](https://nodejs.org/es/download) y descarga el botón que dice **"LTS"**. Ábrelo e instálalo dándole "Siguiente" a todo.
+![Descargar para windows](images/descargar1.png)
+2. **Instalar la Base de Datos:** Entra a [postgresql.org/download/windows](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) y descarga el instalador. Instálalo dando "Siguiente". 
+   > ⚠️ **¡ATENCIÓN!** Durante la instalación, te pedirá que inventes una contraseña. **Anótala y guárdala muy bien**, porque es la llave de tu información y la usaremos en el paso 3.
+![Descargar para windows](images/descargar2.jpeg)
 
 ---
 
-## 3. Preparación del Proyecto
+## 2. Descargar el Sistema
 
-1. **Descargar el proyecto desde GitHub**:
-   En la computadora del cliente, debes descargar el código fuente desde tu repositorio. Puedes hacerlo de dos formas:
-   - **Opción A (Recomendada):** Entra a tu repositorio en GitHub desde el navegador, haz clic en el botón verde **"Code"** y selecciona **"Download ZIP"**. Descomprime ese archivo en una carpeta (ej. `C:\Proyectos\ordenes-de-compra`).
-   - **Opción B (Con Git):** Si el cliente tiene Git instalado, abre la terminal y ejecuta: 
-     `git clone https://github.com/JuanPa3267/ordenes-compras.git`
+1. Ve al enlace que te proporcionó el desarrollador (el archivo del sistema en GitHub).
+2. Busca el botón verde que dice **"Code"** y haz clic en **"Download ZIP"**.
+3. Se descargará un archivo comprimido. Búscalo en tus descargas, dale clic derecho y elige **"Extraer todo"**.
+4. Mueve esa carpeta extraída a un lugar seguro, como tus *Documentos* o tu disco *C:*.
 
-2. **Crear el archivo de configuración (.env)**:
-   Como los archivos de seguridad están ocultos en GitHub (protegidos por el `.gitignore`), **no existirá** el archivo `.env` al descargar el proyecto. Debes crearlo:
-   - Entra a la carpeta del proyecto recién descargado.
-   - Crea un archivo nuevo llamado **exactamente** `.env` (asegúrate de que no termine en .txt).
-   - Ábrelo con el Bloc de notas y pega lo siguiente, asegurándote de cambiar la contraseña por la de PostgreSQL:
+---
+
+## 3. Conectar el Sistema con la Base de Datos
+
+Ahora vamos a decirle al sistema cuál es la contraseña que inventaste en el primer paso.
+
+1. Entra a la carpeta del sistema que acabas de descomprimir.
+2. Abre el **Bloc de notas** en tu computadora.
+3. Copia el siguiente texto y pégalo en el bloc de notas, pero reemplazando `PON_TU_CONTRASEÑA_AQUI` por la contraseña que anotaste en el paso 1:
 
 ```env
-# Reemplaza 'password_del_cliente' por la contraseña que pusiste al instalar PostgreSQL
-DATABASE_URL="postgresql://postgres:password_del_cliente@localhost:5432/ordenes_compras?schema=public"
+DATABASE_URL="postgresql://postgres:PON_TU_CONTRASEÑA_AQUI@localhost:5432/ordenes_compras?schema=public"
 ```
+
+4. En el Bloc de notas, ve a **Archivo > Guardar como...**
+5. Busca la carpeta del sistema. En "Tipo", selecciona **"Todos los archivos"**.
+6. En "Nombre de archivo" escribe exactamente: `.env` (con el punto al principio). Clic en guardar.
 
 ---
 
-## 4. Instalación y Configuración del Entorno
+## 4. Crear la estructura de la base de datos
 
-1. Abre la terminal de Windows (**PowerShell** o **Símbolo del sistema / CMD**).
-2. Navega hasta la carpeta del proyecto:
-   ```bash
-   cd C:\Proyectos\ordenes-de-compra
-   ```
-3. Instala todas las dependencias del proyecto:
+1. Busca en tu computadora un programa llamado **pgAdmin 4** (se instaló en el paso 1, tiene el icono de un elefante) y ábrelo. Pon la contraseña que inventaste.
+2. A la izquierda, verás un menú. Despliega **"Servers"**, dale clic derecho a **"Databases" > "Create" > "Database"**.
+3. Ponle de nombre exactamente: `ordenes_compras` y dale a Guardar.
+4. Ahora dale clic a esa nueva base de datos (`ordenes_compras`) y luego arriba, en la barra superior del programa, haz clic en el botón que parece un cilindro o un rayo y se llama **"Query Tool"** (Herramienta de Consultas). Se abrirá un panel en blanco.
+5. Abre la carpeta de tu sistema y busca un archivo llamado `base de datos.txt`. Ábrelo, copia todo el texto y pégalo en el panel en blanco del pgAdmin.
+6. Dale al botón de **Play** (el triángulo que apunta a la derecha) en la parte de arriba del pgAdmin. Con esto se crearon todas las tablas necesarias.
+
+---
+
+## 5. Encender el sistema
+
+1. Ve a la carpeta de tu sistema.
+2. Haz clic en la **barra de direcciones** de arriba (donde dice la ruta de la carpeta, por ejemplo: _C:\Usuarios\...\ordenes-de-compra_), borra todo lo que dice ahí, escribe **`cmd`** y presiona **Enter**. Se abrirá una ventana negra con letras blancas.
+3. Escribe los siguientes comandos, presionando **Enter** después de cada uno y esperando a que terminen de hacer lo suyo (algunos toman un minuto):
+
+   Escribe esto y presiona Enter:
    ```bash
    npm install
    ```
-4. **Restaurar la estructura de la base de datos (¡Muy Importante!):**
-   Dado que tu base de datos utiliza **funciones y triggers nativos**, el comando estándar de Prisma (`db push`) **NO sirve** por sí solo (Prisma ignora triggers y funciones). Debes restaurar el script SQL manualmente:
-   - Ve a **pgAdmin 4**, haz clic derecho sobre la base de datos `ordenes_compras` y selecciona **Query Tool (Herramienta de Consultas)**.
-   - Abre el archivo `base de datos.txt` que está en la carpeta de tu proyecto, copia **todo** su contenido y pégalo en el Query Tool.
-   - Presiona el botón superior de **Play (Execute/F5)** para ejecutar el script. Esto creará todas las tablas, relaciones, **funciones y triggers** correctamente.
-
-5. Genera el cliente de Prisma para conectar el código a la base de datos:
+   Luego esto y presiona Enter:
    ```bash
    npx prisma generate
    ```
-
----
-
-## 5. Compilación y Arranque (Modo Producción)
-
-Para que el proyecto sea rápido y funcione óptimamente como uso diario para el cliente, se debe usar la versión compilada y no el modo desarrollador (`npm run dev`).
-
-1. En la misma consola, compila el proyecto:
+   Luego esto (preparará el sistema para ser veloz):
    ```bash
    npm run build
    ```
-2. Una vez que termine de compilar (puede tomar unos minutos), levanta el servidor de producción:
+   Por último, para encenderlo, escribe:
    ```bash
    npm run start
    ```
-3. ¡Listo! El cliente puede abrir su navegador web y escribir: `http://localhost:3000`
+
+> ⚠️ **Importante:** Mientras el sistema esté en uso, ¡esa ventanita negra debe quedarse abierta! Puedes minimizarla, pero no la cruces.
 
 ---
 
-## 6. (Opcional, pero Recomendado) Ejecución en Segundo Plano
+## 6. ¡A trabajar!
 
-Si cierras la ventana de la consola negra, el sistema web dejará de funcionar. Para evitar que el cliente tenga que abrir la consola todos los días o si reinicia el equipo, puedes instalar **PM2** para que se ejecute siempre de fondo.
+Tu sistema ya está encendido. Solo debes abrir tu navegador de internet favorito (Chrome, Edge, Safari) y escribir en la barra de direcciones:
 
-1. Instala PM2 globalmente en la computadora del cliente:
-   ```bash
-   npm install -g pm2
-   ```
-2. Inicia un cmd como administrador en la carpeta del proyecto y ejecuta:
-   ```bash
-   pm2 start npm --name "sistema-ordenes" -- run start
-   pm2 startup
-   pm2 save
-   ```
+**http://localhost:3000**
 
-Con esto, por más de que se reinicie la PC, el gestor de órdenes de compra siempre estará disponible en `http://localhost:3000`.
+¡Listo! Ya puedes empezar a usar tu sistema de órdenes de compra.

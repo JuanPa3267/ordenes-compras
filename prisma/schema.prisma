@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model auditoria_eventos {
+  id_evento       BigInt          @id @default(autoincrement())
+  fecha_evento    DateTime        @default(now()) @db.Timestamptz(6)
+  id_gerente      BigInt
+  accion          String          @db.VarChar(60)
+  entidad         String          @db.VarChar(60)
+  entidad_id      String          @db.VarChar(60)
+  detalle         Json?
+  ip_origen       String?         @db.Inet
+  user_agent      String?
+  gerentes_cuenta gerentes_cuenta @relation(fields: [id_gerente], references: [id_gerente])
+}
+
+model clientes {
+  id_cliente        BigInt              @id @default(autoincrement())
+  nit               String              @unique @db.VarChar(30)
+  nombre            String              @db.VarChar(150)
+  direccion         String              @db.VarChar(200)
+  telefono          String?             @db.VarChar(30)
+  fecha_creacion    DateTime            @default(now()) @db.Timestamptz(6)
+  contactos_cliente contactos_cliente[]
+  ordenes_compra    ordenes_compra[]
+}
+
+model contactos_cliente {
+  id_contacto_cliente BigInt           @id @default(autoincrement())
+  id_cliente          BigInt
+  nombre_completo     String           @db.VarChar(120)
+  correo              String           @db.VarChar(150)
+  telefono            String?          @db.VarChar(30)
+  cargo               String?          @db.VarChar(80)
+  activo              Boolean          @default(true)
+  clientes            clientes         @relation(fields: [id_cliente], references: [id_cliente], onDelete: Cascade)
+  ordenes_compra      ordenes_compra[]
+
+  @@index([id_cliente], map: "ix_contactos_cliente_id_cliente")
+}
+
+model distribuidores {
+  id_distribuidor BigInt     @id @default(autoincrement())
+  nombre          String     @unique @db.VarChar(80)
+  oc_items        oc_items[]
+}
+
+model fabricantes {
+  id_fabricante BigInt     @id @default(autoincrement())
+  nombre        String     @unique @db.VarChar(80)
+  oc_items      oc_items[]
+}
+
+model gerentes_cuenta {
+  id_gerente        BigInt              @id @default(autoincrement())
+  nombre_completo   String              @db.VarChar(120)
+  correo            String              @unique @db.VarChar(150)
+  activo            Boolean             @default(true)
+  password          String?
+  id_cargo          BigInt
+  auditoria_eventos auditoria_eventos[]
+  cargos            cargos              @relation(fields: [id_cargo], references: [id_cargo])
+  ordenes_compra    ordenes_compra[]
+}
+
+model monedas {
+  id_moneda      BigInt           @id @default(autoincrement())
+  codigo         String           @unique @db.VarChar(10)
+  nombre         String           @db.VarChar(60)
+  ordenes_compra ordenes_compra[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model oc_items {
+  id_oc_item      BigInt          @id @default(autoincrement())
+  id_oc_proveedor BigInt
+  descripcion     String
+  id_tipo_item    BigInt
+  id_fabricante   BigInt?
+  id_distribuidor BigInt?
+  parte           String?         @db.VarChar(120)
+  modelo          String?         @db.VarChar(120)
+  cantidad        Decimal         @default(0) @db.Decimal(18, 4)
+  valor_unitario  Decimal         @default(0) @db.Decimal(18, 2)
+  subtotal        Decimal         @default(0) @db.Decimal(18, 2)
+  iva             Boolean         @default(false)
+  porcentaje_iva  Decimal         @default(0.1900) @db.Decimal(6, 4)
+  valor_iva       Decimal         @default(0) @db.Decimal(18, 2)
+  total           Decimal         @default(0) @db.Decimal(18, 2)
+  distribuidores  distribuidores? @relation(fields: [id_distribuidor], references: [id_distribuidor])
+  fabricantes     fabricantes?    @relation(fields: [id_fabricante], references: [id_fabricante])
+  oc_proveedores  oc_proveedores  @relation(fields: [id_oc_proveedor], references: [id_oc_proveedor], onDelete: Cascade)
+  tipos_item      tipos_item      @relation(fields: [id_tipo_item], references: [id_tipo_item])
+
+  @@index([id_oc_proveedor], map: "ix_oc_items_oc_proveedor")
+  @@index([id_tipo_item], map: "ix_oc_items_tipo")
+}
+
+model oc_proveedores {
+  id_oc_proveedor       BigInt                 @id @default(autoincrement())
+  id_oc                 BigInt
+  id_proveedor          BigInt
+  notas                 String?                @db.VarChar(255)
+  oc_items              oc_items[]
+  ordenes_compra        ordenes_compra         @relation(fields: [id_oc], references: [id_oc], onDelete: Cascade)
+  proveedores           proveedores            @relation(fields: [id_proveedor], references: [id_proveedor], onDelete: NoAction, onUpdate: NoAction)
+  totales_por_proveedor totales_por_proveedor?
+
+  @@unique([id_oc, id_proveedor])
+  @@index([id_oc], map: "ix_oc_proveedores_oc")
+  @@index([id_proveedor], map: "ix_oc_proveedores_proveedor")
+}
+
+model ordenes_compra {
+  id_oc                BigInt             @id @default(autoincrement())
+  id_cliente           BigInt
+  fecha_emision        DateTime           @default(now()) @db.Timestamptz(6)
+  id_moneda            BigInt
+  descripcion_proyecto String
+  oportunidad          String
+  id_contacto_cliente  BigInt?
+  id_gerente           BigInt
+  contacto_mayorista   String?            @db.VarChar(150)
+  forma_pago           String             @db.VarChar(120)
+  estado               estado_oc          @default(BORRADOR)
+  oc_proveedores       oc_proveedores[]
+  clientes             clientes           @relation(fields: [id_cliente], references: [id_cliente])
+  contactos_cliente    contactos_cliente? @relation(fields: [id_contacto_cliente], references: [id_contacto_cliente])
+  gerentes_cuenta      gerentes_cuenta    @relation(fields: [id_gerente], references: [id_gerente])
+  monedas              monedas            @relation(fields: [id_moneda], references: [id_moneda])
+  totales_oc           totales_oc?
+
+  @@index([id_cliente], map: "ix_oc_cliente")
+  @@index([id_gerente], map: "ix_oc_gerente")
+  @@index([id_moneda], map: "ix_oc_moneda")
+}
+
+model proveedores {
+  id_proveedor   BigInt           @id @default(autoincrement())
+  nombre         String           @db.VarChar(150)
+  direccion      String           @db.VarChar(200)
+  telefono       String?          @db.VarChar(30)
+  correo         String           @db.VarChar(150)
+  fecha_creacion DateTime         @default(now()) @db.Timestamptz(6)
+  oc_proveedores oc_proveedores[]
+}
+
+model tipos_item {
+  id_tipo_item BigInt     @id @default(autoincrement())
+  nombre       String     @unique @db.VarChar(60)
+  descripcion  String?    @db.VarChar(255)
+  oc_items     oc_items[]
+}
+
+model totales_oc {
+  id_totales     BigInt         @id @default(autoincrement())
+  id_oc          BigInt         @unique
+  subtotal       Decimal        @default(0) @db.Decimal(18, 2)
+  iva_total      Decimal        @default(0) @db.Decimal(18, 2)
+  total          Decimal        @default(0) @db.Decimal(18, 2)
+  ordenes_compra ordenes_compra @relation(fields: [id_oc], references: [id_oc], onDelete: Cascade)
+}
+
+model totales_por_proveedor {
+  id_totales_proveedor BigInt         @id @default(autoincrement())
+  id_oc_proveedor      BigInt         @unique
+  subtotal             Decimal        @default(0) @db.Decimal(18, 2)
+  iva_total            Decimal        @default(0) @db.Decimal(18, 2)
+  total                Decimal        @default(0) @db.Decimal(18, 2)
+  oc_proveedores       oc_proveedores @relation(fields: [id_oc_proveedor], references: [id_oc_proveedor], onDelete: Cascade)
+}
+
+model cargos {
+  id_cargo        BigInt            @id @default(autoincrement())
+  descripcion     String            @unique @db.VarChar(80)
+  gerentes_cuenta gerentes_cuenta[]
+}
+
+enum estado_oc {
+  BORRADOR
+  ENVIADO
+  CANCELADO
+}

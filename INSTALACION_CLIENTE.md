@@ -29,12 +29,17 @@ En la computadora del cliente, debes descargar e instalar lo siguiente:
 
 ## 3. Preparación del Proyecto
 
-1. Copia toda la carpeta de tu proyecto (`ordenes-de-compra`) a la PC del cliente (ej. `C:\Proyectos\ordenes-de-compra`).
-   
-> [!WARNING]
-> **No copies** las carpetas `node_modules` ni `.next` desde tu computadora a la del cliente. Estas carpetas contienen archivos compilados para *tu* sistema operativo y podrían causar errores. Cópialo sin esas carpetas.
+1. **Descargar el proyecto desde GitHub**:
+   En la computadora del cliente, debes descargar el código fuente desde tu repositorio. Puedes hacerlo de dos formas:
+   - **Opción A (Recomendada):** Entra a tu repositorio en GitHub desde el navegador, haz clic en el botón verde **"Code"** y selecciona **"Download ZIP"**. Descomprime ese archivo en una carpeta (ej. `C:\Proyectos\ordenes-de-compra`).
+   - **Opción B (Con Git):** Si el cliente tiene Git instalado, abre la terminal y ejecuta: 
+     `git clone https://github.com/JuanPa3267/ordenes-compras.git`
 
-2. En la carpeta que acabas de copiar al PC del cliente, asegúrate de que exista el archivo `.env`. Edítalo (con el bloc de notas u otro editor) para que tenga los datos correctos:
+2. **Crear el archivo de configuración (.env)**:
+   Como los archivos de seguridad están ocultos en GitHub (protegidos por el `.gitignore`), **no existirá** el archivo `.env` al descargar el proyecto. Debes crearlo:
+   - Entra a la carpeta del proyecto recién descargado.
+   - Crea un archivo nuevo llamado **exactamente** `.env` (asegúrate de que no termine en .txt).
+   - Ábrelo con el Bloc de notas y pega lo siguiente, asegurándote de cambiar la contraseña por la de PostgreSQL:
 
 ```env
 # Reemplaza 'password_del_cliente' por la contraseña que pusiste al instalar PostgreSQL

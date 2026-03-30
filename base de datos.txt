@@ -1,249 +1,24 @@
--- DROP SCHEMA public;
-
+-- 1. REINICIAR ESQUEMA
+DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public AUTHORIZATION pg_database_owner;
-
 COMMENT ON SCHEMA public IS 'standard public schema';
 
--- DROP TYPE public.estado_oc;
+-- 2. EXTENSIONES (Para funciones criptográficas como gen_random_uuid, crypt, etc.)
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
+-- 3. TIPOS PERSONALIZADOS (ENUMS)
 CREATE TYPE public.estado_oc AS ENUM (
 	'BORRADOR',
 	'ENVIADO',
 	'CANCELADO');
 
--- DROP SEQUENCE public.auditoria_eventos_id_evento_seq;
-
-CREATE SEQUENCE public.auditoria_eventos_id_evento_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.auditoria_eventos_id_evento_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.auditoria_eventos_id_evento_seq TO postgres;
-
--- DROP SEQUENCE public.cargos_id_cargo_seq;
-
-CREATE SEQUENCE public.cargos_id_cargo_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.cargos_id_cargo_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.cargos_id_cargo_seq TO postgres;
-
--- DROP SEQUENCE public.clientes_id_cliente_seq;
-
-CREATE SEQUENCE public.clientes_id_cliente_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.clientes_id_cliente_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.clientes_id_cliente_seq TO postgres;
-
--- DROP SEQUENCE public.contactos_cliente_id_contacto_cliente_seq;
-
-CREATE SEQUENCE public.contactos_cliente_id_contacto_cliente_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.contactos_cliente_id_contacto_cliente_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.contactos_cliente_id_contacto_cliente_seq TO postgres;
-
--- DROP SEQUENCE public.distribuidores_id_distribuidor_seq;
-
-CREATE SEQUENCE public.distribuidores_id_distribuidor_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.distribuidores_id_distribuidor_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.distribuidores_id_distribuidor_seq TO postgres;
-
--- DROP SEQUENCE public.fabricantes_id_fabricante_seq;
-
-CREATE SEQUENCE public.fabricantes_id_fabricante_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.fabricantes_id_fabricante_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.fabricantes_id_fabricante_seq TO postgres;
-
--- DROP SEQUENCE public.gerentes_cuenta_id_gerente_seq;
-
-CREATE SEQUENCE public.gerentes_cuenta_id_gerente_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.gerentes_cuenta_id_gerente_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.gerentes_cuenta_id_gerente_seq TO postgres;
-
--- DROP SEQUENCE public.monedas_id_moneda_seq;
-
-CREATE SEQUENCE public.monedas_id_moneda_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.monedas_id_moneda_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.monedas_id_moneda_seq TO postgres;
-
--- DROP SEQUENCE public.oc_items_id_oc_item_seq;
-
-CREATE SEQUENCE public.oc_items_id_oc_item_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.oc_items_id_oc_item_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.oc_items_id_oc_item_seq TO postgres;
-
--- DROP SEQUENCE public.oc_proveedores_id_oc_proveedor_seq;
-
-CREATE SEQUENCE public.oc_proveedores_id_oc_proveedor_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.oc_proveedores_id_oc_proveedor_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.oc_proveedores_id_oc_proveedor_seq TO postgres;
-
--- DROP SEQUENCE public.ordenes_compra_id_oc_seq;
-
-CREATE SEQUENCE public.ordenes_compra_id_oc_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.ordenes_compra_id_oc_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.ordenes_compra_id_oc_seq TO postgres;
-
--- DROP SEQUENCE public.tipos_item_id_tipo_item_seq;
-
-CREATE SEQUENCE public.tipos_item_id_tipo_item_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.tipos_item_id_tipo_item_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.tipos_item_id_tipo_item_seq TO postgres;
-
--- DROP SEQUENCE public.totales_oc_id_totales_seq;
-
-CREATE SEQUENCE public.totales_oc_id_totales_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.totales_oc_id_totales_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.totales_oc_id_totales_seq TO postgres;
-
--- DROP SEQUENCE public.totales_por_proveedor_id_totales_proveedor_seq;
-
-CREATE SEQUENCE public.totales_por_proveedor_id_totales_proveedor_seq
-	INCREMENT BY 1
-	MINVALUE 1
-	MAXVALUE 9223372036854775807
-	START 1
-	CACHE 1
-	NO CYCLE;
-
--- Permissions
-
-ALTER SEQUENCE public.totales_por_proveedor_id_totales_proveedor_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.totales_por_proveedor_id_totales_proveedor_seq TO postgres;
--- public.cargos definition
-
--- Drop table
-
--- DROP TABLE public.cargos;
-
+-- 4. TABLAS BASE (Sin dependencias de FK)
 CREATE TABLE public.cargos (
 	id_cargo bigserial NOT NULL,
 	descripcion varchar(80) NOT NULL,
 	CONSTRAINT cargos_descripcion_key UNIQUE (descripcion),
 	CONSTRAINT cargos_pkey PRIMARY KEY (id_cargo)
 );
-
--- Permissions
-
-ALTER TABLE public.cargos OWNER TO postgres;
-GRANT ALL ON TABLE public.cargos TO postgres;
-
-
--- public.clientes definition
-
--- Drop table
-
--- DROP TABLE public.clientes;
 
 CREATE TABLE public.clientes (
 	id_cliente bigserial NOT NULL,
@@ -256,36 +31,12 @@ CREATE TABLE public.clientes (
 	CONSTRAINT clientes_pkey PRIMARY KEY (id_cliente)
 );
 
--- Permissions
-
-ALTER TABLE public.clientes OWNER TO postgres;
-GRANT ALL ON TABLE public.clientes TO postgres;
-
-
--- public.distribuidores definition
-
--- Drop table
-
--- DROP TABLE public.distribuidores;
-
 CREATE TABLE public.distribuidores (
 	id_distribuidor bigserial NOT NULL,
 	nombre varchar(80) NOT NULL,
 	CONSTRAINT distribuidores_nombre_key UNIQUE (nombre),
 	CONSTRAINT distribuidores_pkey PRIMARY KEY (id_distribuidor)
 );
-
--- Permissions
-
-ALTER TABLE public.distribuidores OWNER TO postgres;
-GRANT ALL ON TABLE public.distribuidores TO postgres;
-
-
--- public.fabricantes definition
-
--- Drop table
-
--- DROP TABLE public.fabricantes;
 
 CREATE TABLE public.fabricantes (
 	id_fabricante bigserial NOT NULL,
@@ -294,18 +45,6 @@ CREATE TABLE public.fabricantes (
 	CONSTRAINT fabricantes_pkey PRIMARY KEY (id_fabricante)
 );
 
--- Permissions
-
-ALTER TABLE public.fabricantes OWNER TO postgres;
-GRANT ALL ON TABLE public.fabricantes TO postgres;
-
-
--- public.monedas definition
-
--- Drop table
-
--- DROP TABLE public.monedas;
-
 CREATE TABLE public.monedas (
 	id_moneda bigserial NOT NULL,
 	codigo varchar(10) NOT NULL,
@@ -313,18 +52,6 @@ CREATE TABLE public.monedas (
 	CONSTRAINT monedas_codigo_key UNIQUE (codigo),
 	CONSTRAINT monedas_pkey PRIMARY KEY (id_moneda)
 );
-
--- Permissions
-
-ALTER TABLE public.monedas OWNER TO postgres;
-GRANT ALL ON TABLE public.monedas TO postgres;
-
-
--- public.proveedores definition
-
--- Drop table
-
--- DROP TABLE public.proveedores;
 
 CREATE TABLE public.proveedores (
 	id_proveedor int8 GENERATED BY DEFAULT AS IDENTITY NOT NULL,
@@ -336,18 +63,6 @@ CREATE TABLE public.proveedores (
 	CONSTRAINT proveedores_pkey PRIMARY KEY (id_proveedor)
 );
 
--- Permissions
-
-ALTER TABLE public.proveedores OWNER TO postgres;
-GRANT ALL ON TABLE public.proveedores TO postgres;
-
-
--- public.tipos_item definition
-
--- Drop table
-
--- DROP TABLE public.tipos_item;
-
 CREATE TABLE public.tipos_item (
 	id_tipo_item bigserial NOT NULL,
 	nombre varchar(60) NOT NULL,
@@ -356,18 +71,7 @@ CREATE TABLE public.tipos_item (
 	CONSTRAINT tipos_item_pkey PRIMARY KEY (id_tipo_item)
 );
 
--- Permissions
-
-ALTER TABLE public.tipos_item OWNER TO postgres;
-GRANT ALL ON TABLE public.tipos_item TO postgres;
-
-
--- public.contactos_cliente definition
-
--- Drop table
-
--- DROP TABLE public.contactos_cliente;
-
+-- 5. TABLAS DE SEGUNDO NIVEL (Dependen de las bases)
 CREATE TABLE public.contactos_cliente (
 	id_contacto_cliente bigserial NOT NULL,
 	id_cliente int8 NOT NULL,
@@ -379,19 +83,7 @@ CREATE TABLE public.contactos_cliente (
 	CONSTRAINT contactos_cliente_pkey PRIMARY KEY (id_contacto_cliente),
 	CONSTRAINT contactos_cliente_id_cliente_fkey FOREIGN KEY (id_cliente) REFERENCES public.clientes(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE INDEX ix_contactos_cliente_id_cliente ON public.contactos_cliente USING btree (id_cliente);
-
--- Permissions
-
-ALTER TABLE public.contactos_cliente OWNER TO postgres;
-GRANT ALL ON TABLE public.contactos_cliente TO postgres;
-
-
--- public.gerentes_cuenta definition
-
--- Drop table
-
--- DROP TABLE public.gerentes_cuenta;
+CREATE INDEX ix_contactos_cliente_id_cliente ON public.contactos_cliente (id_cliente);
 
 CREATE TABLE public.gerentes_cuenta (
 	id_gerente bigserial NOT NULL,
@@ -405,18 +97,7 @@ CREATE TABLE public.gerentes_cuenta (
 	CONSTRAINT gerentes_cuenta_id_cargo_fkey FOREIGN KEY (id_cargo) REFERENCES public.cargos(id_cargo) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- Permissions
-
-ALTER TABLE public.gerentes_cuenta OWNER TO postgres;
-GRANT ALL ON TABLE public.gerentes_cuenta TO postgres;
-
-
--- public.ordenes_compra definition
-
--- Drop table
-
--- DROP TABLE public.ordenes_compra;
-
+-- 6. TABLAS DE NEGOCIO (Ordenes de Compra)
 CREATE TABLE public.ordenes_compra (
 	id_oc bigserial NOT NULL,
 	id_cliente int8 NOT NULL,
@@ -435,21 +116,6 @@ CREATE TABLE public.ordenes_compra (
 	CONSTRAINT ordenes_compra_id_gerente_fkey FOREIGN KEY (id_gerente) REFERENCES public.gerentes_cuenta(id_gerente) ON DELETE RESTRICT ON UPDATE CASCADE,
 	CONSTRAINT ordenes_compra_id_moneda_fkey FOREIGN KEY (id_moneda) REFERENCES public.monedas(id_moneda) ON DELETE RESTRICT ON UPDATE CASCADE
 );
-CREATE INDEX ix_oc_cliente ON public.ordenes_compra USING btree (id_cliente);
-CREATE INDEX ix_oc_gerente ON public.ordenes_compra USING btree (id_gerente);
-CREATE INDEX ix_oc_moneda ON public.ordenes_compra USING btree (id_moneda);
-
--- Permissions
-
-ALTER TABLE public.ordenes_compra OWNER TO postgres;
-GRANT ALL ON TABLE public.ordenes_compra TO postgres;
-
-
--- public.totales_oc definition
-
--- Drop table
-
--- DROP TABLE public.totales_oc;
 
 CREATE TABLE public.totales_oc (
 	id_totales bigserial NOT NULL,
@@ -461,18 +127,6 @@ CREATE TABLE public.totales_oc (
 	CONSTRAINT totales_oc_pkey PRIMARY KEY (id_totales),
 	CONSTRAINT totales_oc_id_oc_fkey FOREIGN KEY (id_oc) REFERENCES public.ordenes_compra(id_oc) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- Permissions
-
-ALTER TABLE public.totales_oc OWNER TO postgres;
-GRANT ALL ON TABLE public.totales_oc TO postgres;
-
-
--- public.auditoria_eventos definition
-
--- Drop table
-
--- DROP TABLE public.auditoria_eventos;
 
 CREATE TABLE public.auditoria_eventos (
 	id_evento bigserial NOT NULL,
@@ -488,42 +142,16 @@ CREATE TABLE public.auditoria_eventos (
 	CONSTRAINT auditoria_eventos_id_gerente_fkey FOREIGN KEY (id_gerente) REFERENCES public.gerentes_cuenta(id_gerente) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- Permissions
-
-ALTER TABLE public.auditoria_eventos OWNER TO postgres;
-GRANT ALL ON TABLE public.auditoria_eventos TO postgres;
-
-
--- public.oc_proveedores definition
-
--- Drop table
-
--- DROP TABLE public.oc_proveedores;
-
+-- 7. DETALLE DE PROVEEDORES POR OC
 CREATE TABLE public.oc_proveedores (
 	id_oc_proveedor bigserial NOT NULL,
 	id_oc int8 NOT NULL,
-	id_proveedor varchar(30) NOT NULL,
+	id_proveedor int8 NOT NULL, -- Corregido de varchar a int8 para coincidir con tabla proveedores
 	notas varchar(255) NULL,
-	CONSTRAINT oc_proveedores_id_oc_id_proveedor_key null,
 	CONSTRAINT oc_proveedores_pkey PRIMARY KEY (id_oc_proveedor),
 	CONSTRAINT oc_proveedores_id_oc_fkey FOREIGN KEY (id_oc) REFERENCES public.ordenes_compra(id_oc) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT oc_proveedores_id_proveedor_fkey FOREIGN KEY (id_proveedor) REFERENCES public.proveedores(id_proveedor) ON DELETE RESTRICT ON UPDATE CASCADE
 );
-CREATE INDEX ix_oc_proveedores_oc ON public.oc_proveedores USING btree (id_oc);
-CREATE INDEX ix_oc_proveedores_proveedor ON public.oc_proveedores (id_proveedor text_ops);
-
--- Permissions
-
-ALTER TABLE public.oc_proveedores OWNER TO postgres;
-GRANT ALL ON TABLE public.oc_proveedores TO postgres;
-
-
--- public.totales_por_proveedor definition
-
--- Drop table
-
--- DROP TABLE public.totales_por_proveedor;
 
 CREATE TABLE public.totales_por_proveedor (
 	id_totales_proveedor bigserial NOT NULL,
@@ -536,18 +164,7 @@ CREATE TABLE public.totales_por_proveedor (
 	CONSTRAINT totales_por_proveedor_id_oc_proveedor_fkey FOREIGN KEY (id_oc_proveedor) REFERENCES public.oc_proveedores(id_oc_proveedor) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Permissions
-
-ALTER TABLE public.totales_por_proveedor OWNER TO postgres;
-GRANT ALL ON TABLE public.totales_por_proveedor TO postgres;
-
-
--- public.oc_items definition
-
--- Drop table
-
--- DROP TABLE public.oc_items;
-
+-- 8. ITEMS DE LA ORDEN (Nivel más bajo)
 CREATE TABLE public.oc_items (
 	id_oc_item bigserial NOT NULL,
 	id_oc_proveedor int8 NOT NULL,
@@ -564,223 +181,32 @@ CREATE TABLE public.oc_items (
 	porcentaje_iva numeric(6, 4) DEFAULT 0.1900 NOT NULL,
 	valor_iva numeric(18, 2) DEFAULT 0 NOT NULL,
 	total numeric(18, 2) DEFAULT 0 NOT NULL,
-	CONSTRAINT oc_items_cantidad_check CHECK ((cantidad >= (0)::numeric)),
+	CONSTRAINT oc_items_cantidad_check CHECK (cantidad >= 0),
 	CONSTRAINT oc_items_pkey PRIMARY KEY (id_oc_item),
-	CONSTRAINT oc_items_porcentaje_iva_check CHECK ((porcentaje_iva >= (0)::numeric)),
-	CONSTRAINT oc_items_valor_unitario_check CHECK ((valor_unitario >= (0)::numeric)),
+	CONSTRAINT oc_items_porcentaje_iva_check CHECK (porcentaje_iva >= 0),
+	CONSTRAINT oc_items_valor_unitario_check CHECK (valor_unitario >= 0),
 	CONSTRAINT oc_items_id_distribuidor_fkey FOREIGN KEY (id_distribuidor) REFERENCES public.distribuidores(id_distribuidor) ON DELETE SET NULL ON UPDATE CASCADE,
 	CONSTRAINT oc_items_id_fabricante_fkey FOREIGN KEY (id_fabricante) REFERENCES public.fabricantes(id_fabricante) ON DELETE SET NULL ON UPDATE CASCADE,
 	CONSTRAINT oc_items_id_oc_proveedor_fkey FOREIGN KEY (id_oc_proveedor) REFERENCES public.oc_proveedores(id_oc_proveedor) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT oc_items_id_tipo_item_fkey FOREIGN KEY (id_tipo_item) REFERENCES public.tipos_item(id_tipo_item) ON DELETE RESTRICT ON UPDATE CASCADE
 );
-CREATE INDEX ix_oc_items_oc_proveedor ON public.oc_items USING btree (id_oc_proveedor);
-CREATE INDEX ix_oc_items_tipo ON public.oc_items USING btree (id_tipo_item);
 
--- Table Triggers
-
-create trigger trg_oc_items_calc before
-insert
-    or
-update
-    on
-    public.oc_items for each row execute function fn_oc_items_calcular_totales();
-create trigger trg_oc_items_recalcular_global after
-insert
-    or
-delete
-    or
-update
-    on
-    public.oc_items for each row execute function fn_recalcular_totales_completos();
-
--- Permissions
-
-ALTER TABLE public.oc_items OWNER TO postgres;
-GRANT ALL ON TABLE public.oc_items TO postgres;
-
-
-
--- DROP FUNCTION public.armor(bytea);
-
-CREATE OR REPLACE FUNCTION public.armor(bytea)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_armor$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.armor(bytea) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.armor(bytea) TO postgres;
-
--- DROP FUNCTION public.armor(bytea, _text, _text);
-
-CREATE OR REPLACE FUNCTION public.armor(bytea, text[], text[])
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_armor$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.armor(bytea, _text, _text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.armor(bytea, _text, _text) TO postgres;
-
--- DROP FUNCTION public.crypt(text, text);
-
-CREATE OR REPLACE FUNCTION public.crypt(text, text)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_crypt$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.crypt(text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.crypt(text, text) TO postgres;
-
--- DROP FUNCTION public.dearmor(text);
-
-CREATE OR REPLACE FUNCTION public.dearmor(text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_dearmor$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.dearmor(text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.dearmor(text) TO postgres;
-
--- DROP FUNCTION public.decrypt(bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.decrypt(bytea, bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_decrypt$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.decrypt(bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.decrypt(bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.decrypt_iv(bytea, bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.decrypt_iv(bytea, bytea, bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_decrypt_iv$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.decrypt_iv(bytea, bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.decrypt_iv(bytea, bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.digest(text, text);
-
-CREATE OR REPLACE FUNCTION public.digest(text, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_digest$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.digest(text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.digest(text, text) TO postgres;
-
--- DROP FUNCTION public.digest(bytea, text);
-
-CREATE OR REPLACE FUNCTION public.digest(bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_digest$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.digest(bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.digest(bytea, text) TO postgres;
-
--- DROP FUNCTION public.encrypt(bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.encrypt(bytea, bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_encrypt$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.encrypt(bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.encrypt(bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.encrypt_iv(bytea, bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.encrypt_iv(bytea, bytea, bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_encrypt_iv$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.encrypt_iv(bytea, bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.encrypt_iv(bytea, bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.fips_mode();
-
-CREATE OR REPLACE FUNCTION public.fips_mode()
- RETURNS boolean
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_check_fipsmode$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.fips_mode() OWNER TO postgres;
-GRANT ALL ON FUNCTION public.fips_mode() TO postgres;
-
--- DROP FUNCTION public.fn_oc_items_calcular_totales();
-
+-- 9. FUNCIONES DE LÓGICA (Deben ir antes que los Triggers)
 CREATE OR REPLACE FUNCTION public.fn_oc_items_calcular_totales()
  RETURNS trigger
  LANGUAGE plpgsql
 AS $function$
 BEGIN
   NEW.subtotal := ROUND((NEW.cantidad * NEW.valor_unitario)::numeric, 2);
-
   IF NEW.iva THEN
     NEW.valor_iva := ROUND((NEW.subtotal * NEW.porcentaje_iva)::numeric, 2);
   ELSE
     NEW.valor_iva := 0;
   END IF;
-
   NEW.total := ROUND((NEW.subtotal + NEW.valor_iva)::numeric, 2);
   RETURN NEW;
 END;
-$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.fn_oc_items_calcular_totales() OWNER TO postgres;
-GRANT ALL ON FUNCTION public.fn_oc_items_calcular_totales() TO postgres;
-
--- DROP FUNCTION public.fn_recalcular_totales_completos();
+$function$;
 
 CREATE OR REPLACE FUNCTION public.fn_recalcular_totales_completos()
  RETURNS trigger
@@ -790,17 +216,15 @@ DECLARE
     v_id_oc_proveedor BIGINT;
     v_id_oc BIGINT;
 BEGIN
-    -- 1. Determinar qué ID de proveedor estamos afectando
     IF (TG_OP = 'DELETE') THEN
         v_id_oc_proveedor := OLD.id_oc_proveedor;
     ELSE
         v_id_oc_proveedor := NEW.id_oc_proveedor;
     END IF;
 
-    -- 2. Obtener el ID de la Orden de Compra (OC) principal
     SELECT id_oc INTO v_id_oc FROM public.oc_proveedores WHERE id_oc_proveedor = v_id_oc_proveedor;
 
-    -- 3. Actualizar totales por PROVEEDOR
+    -- Actualizar totales por PROVEEDOR
     INSERT INTO public.totales_por_proveedor (id_oc_proveedor, subtotal, iva_total, total)
     SELECT 
         v_id_oc_proveedor,
@@ -815,7 +239,7 @@ BEGIN
         iva_total = EXCLUDED.iva_total,
         total = EXCLUDED.total;
 
-    -- 4. Actualizar totales de la OC GLOBAL
+    -- Actualizar totales de la OC GLOBAL
     INSERT INTO public.totales_oc (id_oc, subtotal, iva_total, total)
     SELECT 
         v_id_oc,
@@ -833,379 +257,17 @@ BEGIN
 
     RETURN NULL;
 END;
-$function$
-;
+$function$;
 
--- Permissions
+-- 10. TRIGGERS
+CREATE TRIGGER trg_oc_items_calc 
+BEFORE INSERT OR UPDATE ON public.oc_items 
+FOR EACH ROW EXECUTE FUNCTION fn_oc_items_calcular_totales();
 
-ALTER FUNCTION public.fn_recalcular_totales_completos() OWNER TO postgres;
-GRANT ALL ON FUNCTION public.fn_recalcular_totales_completos() TO postgres;
+CREATE TRIGGER trg_oc_items_recalcular_global 
+AFTER INSERT OR DELETE OR UPDATE ON public.oc_items 
+FOR EACH ROW EXECUTE FUNCTION fn_recalcular_totales_completos();
 
--- DROP FUNCTION public.gen_random_bytes(int4);
-
-CREATE OR REPLACE FUNCTION public.gen_random_bytes(integer)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_random_bytes$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.gen_random_bytes(int4) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.gen_random_bytes(int4) TO postgres;
-
--- DROP FUNCTION public.gen_random_uuid();
-
-CREATE OR REPLACE FUNCTION public.gen_random_uuid()
- RETURNS uuid
- LANGUAGE c
- PARALLEL SAFE
-AS '$libdir/pgcrypto', $function$pg_random_uuid$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.gen_random_uuid() OWNER TO postgres;
-GRANT ALL ON FUNCTION public.gen_random_uuid() TO postgres;
-
--- DROP FUNCTION public.gen_salt(text);
-
-CREATE OR REPLACE FUNCTION public.gen_salt(text)
- RETURNS text
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_gen_salt$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.gen_salt(text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.gen_salt(text) TO postgres;
-
--- DROP FUNCTION public.gen_salt(text, int4);
-
-CREATE OR REPLACE FUNCTION public.gen_salt(text, integer)
- RETURNS text
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_gen_salt_rounds$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.gen_salt(text, int4) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.gen_salt(text, int4) TO postgres;
-
--- DROP FUNCTION public.hmac(text, text, text);
-
-CREATE OR REPLACE FUNCTION public.hmac(text, text, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_hmac$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.hmac(text, text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.hmac(text, text, text) TO postgres;
-
--- DROP FUNCTION public.hmac(bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.hmac(bytea, bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pg_hmac$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.hmac(bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.hmac(bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_armor_headers(in text, out text, out text);
-
-CREATE OR REPLACE FUNCTION public.pgp_armor_headers(text, OUT key text, OUT value text)
- RETURNS SETOF record
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_armor_headers$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_armor_headers(in text, out text, out text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_armor_headers(in text, out text, out text) TO postgres;
-
--- DROP FUNCTION public.pgp_key_id(bytea);
-
-CREATE OR REPLACE FUNCTION public.pgp_key_id(bytea)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_key_id_w$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_key_id(bytea) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_key_id(bytea) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_decrypt(bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_decrypt(bytea, bytea, text)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_decrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_decrypt(bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_decrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea, text, text) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_decrypt(bytea, bytea);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_decrypt(bytea, bytea)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_decrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_decrypt(bytea, bytea) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_decrypt(bytea, bytea) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_decrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_decrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_decrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_decrypt_bytea(bytea, bytea, text, text) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_encrypt(text, bytea);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_encrypt(text, bytea)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_encrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_encrypt(text, bytea) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_encrypt(text, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_encrypt(text, bytea, text)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_encrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_encrypt(text, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_encrypt(text, bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_encrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea);
-
-CREATE OR REPLACE FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_pub_encrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_pub_encrypt_bytea(bytea, bytea) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_decrypt(bytea, text, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_decrypt(bytea, text, text)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_decrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_decrypt(bytea, text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text, text) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_decrypt(bytea, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_decrypt(bytea, text)
- RETURNS text
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_decrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_decrypt(bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_decrypt(bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_decrypt_bytea(bytea, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_decrypt_bytea(bytea, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_decrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_decrypt_bytea(bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text)
- RETURNS bytea
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_decrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_decrypt_bytea(bytea, text, text) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_encrypt(text, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_encrypt(text, text)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_encrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_encrypt(text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_encrypt(text, text, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_encrypt(text, text, text)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_encrypt_text$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_encrypt(text, text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_encrypt(text, text, text) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_encrypt_bytea(bytea, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_encrypt_bytea(bytea, text)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_encrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_encrypt_bytea(bytea, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text) TO postgres;
-
--- DROP FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text);
-
-CREATE OR REPLACE FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text)
- RETURNS bytea
- LANGUAGE c
- PARALLEL SAFE STRICT
-AS '$libdir/pgcrypto', $function$pgp_sym_encrypt_bytea$function$
-;
-
--- Permissions
-
-ALTER FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text) OWNER TO postgres;
-GRANT ALL ON FUNCTION public.pgp_sym_encrypt_bytea(bytea, text, text) TO postgres;
-
-
--- Permissions
-
+-- 11. PERMISOS FINALES
 GRANT ALL ON SCHEMA public TO pg_database_owner;
+GRANT ALL ON SCHEMA public TO postgres;

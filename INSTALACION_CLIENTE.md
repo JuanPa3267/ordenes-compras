@@ -12,6 +12,7 @@ Tu computadora necesita dos "motores" para funcionar: uno para el sistema y otro
 ![Descargar para windows](images/descargar1.png)
 2. **Instalar la Base de Datos:** Entra a [postgresql.org/download/windows](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) y descarga el instalador. Instálalo dando "Siguiente". 
    > ⚠️ **¡ATENCIÓN!** Durante la instalación, te pedirá que inventes una contraseña. **Anótala y guárdala muy bien**, porque es la llave de tu información y la usaremos en el paso 3.
+
 ![Descargar para windows](images/descargar2.jpeg)
 
 ---
@@ -23,6 +24,7 @@ Tu computadora necesita dos "motores" para funcionar: uno para el sistema y otro
 3. Se descargará un archivo comprimido. Búscalo en tus descargas, dale clic derecho y elige **"Extraer todo"**.
 4. Mueve esa carpeta extraída a un lugar seguro, como tus *Documentos* o tu disco *C:*.
 
+![Descargar para windows](images/descargar3.jpeg)
 ---
 
 ## 3. Conectar el Sistema con la Base de Datos
